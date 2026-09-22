@@ -77,7 +77,6 @@ footer span { color: var(--muted); }
   .principle-grid article { max-width: 34rem; }
   .principle-grid h3 { font-size: 1.55rem; margin-bottom: 0.75rem; }
   footer { gap: 1rem; flex-wrap: wrap; }
-  footer span { display: block; margin-top: 0.5rem; }
   #matrix-canvas { opacity: 0.32; }
 }
 
