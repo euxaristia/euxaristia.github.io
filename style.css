@@ -1,0 +1,86 @@
+:root {
+  color-scheme: dark;
+  --ink: #020504;
+  --paper: #edf1e9;
+  --muted: #a4b1a8;
+  --green: #78df9c;
+  --line: #304039;
+  font-family: "IBM Plex Mono", monospace;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 2rem; }
+body { margin: 0; }
+a { color: inherit; text-underline-offset: 0.3em; }
+a:hover { color: var(--green); }
+a:focus-visible { outline: 2px solid var(--green); outline-offset: 6px; }
+::selection { background: var(--green); color: var(--ink); }
+
+#matrix-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #020504b8, #02050425 70%),
+    linear-gradient(0deg, var(--ink), transparent 85%);
+}
+
+.site-shell { position: relative; z-index: 1; width: min(1280px, 88%); margin-inline: auto; }
+.masthead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 2rem; padding-block: 2rem; font-size: 0.8rem; }
+.masthead a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.home-link { color: var(--green); }
+nav { display: flex; gap: 2rem; }
+.hero { min-height: min(850px, 91svh); display: flex; flex-direction: column; justify-content: center; padding-block: 5rem 6rem; gap: clamp(3.5rem, 8vw, 8rem); }
+.role { margin: 0 0 1.6rem; font-size: 0.8rem; color: var(--muted); }
+h1 { margin: 0 0 0 -0.045em; font-family: "Syne", sans-serif; font-size: clamp(3.2rem, 12.7vw, 11.5rem); font-weight: 600; line-height: 1; letter-spacing: -0.065em; }
+h1 span { color: var(--green); }
+.hero-bottom { display: grid; grid-template-columns: 1.3fr 1fr; gap: 4rem; align-items: end; }
+.statement { margin: 0; font-family: "Syne", sans-serif; font-size: clamp(2rem, 4vw, 3.8rem); line-height: 1.12; letter-spacing: -0.04em; }
+.introduction { max-width: 29rem; }
+.introduction p { margin: 0 0 1.8rem; color: var(--muted); font-size: 0.95rem; line-height: 1.85; }
+.profile-link { display: inline-flex; gap: 1.5rem; align-items: center; font-size: 0.8rem; padding-block: 0.7rem; }
+.profile-link span { font-size: 1.35rem; text-decoration: none; }
+.principles { border-top: 1px solid var(--line); padding-block: 2.5rem 6rem; }
+.principles h2 { margin: 0 0 3rem; color: var(--green); font-size: 0.8rem; font-weight: 400; }
+.principle-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3.5rem; }
+.principle-grid h3 { margin: 0 0 1.2rem; font-family: "Syne", sans-serif; font-weight: 500; font-size: clamp(1.3rem, 2vw, 1.9rem); letter-spacing: -0.03em; }
+.principle-grid p { margin: 0; font-size: 0.8rem; color: var(--muted); line-height: 1.85; }
+footer { display: flex; justify-content: space-between; align-items: center; gap: 2rem; border-top: 1px solid var(--line); padding-block: 1.8rem max(2rem, env(safe-area-inset-bottom)); font-size: 0.7rem; }
+footer p { margin: 0; }
+footer span { color: var(--muted); }
+.skip-link { position: absolute; top: 0.5rem; left: 1rem; padding: 0.8rem; background: var(--ink); transform: translateY(-200%); z-index: 3; }
+.skip-link:focus { transform: translateY(0); }
+
+@media (max-width: 700px) {
+  .site-shell { width: 88%; }
+  .masthead { font-size: 0.68rem; gap: 1rem; padding-block: 1.5rem; }
+  nav { gap: 1rem; }
+  .hero { min-height: auto; padding-block: 4.5rem; gap: 3rem; }
+  .role { font-size: 0.65rem; margin-bottom: 1.2rem; }
+  .hero-bottom { grid-template-columns: 1fr; gap: 2rem; }
+  .statement { font-size: clamp(2.3rem, 7vw, 3rem); }
+  .introduction p { font-size: 0.85rem; }
+  .principles { padding-bottom: 3.5rem; }
+  .principles h2 { margin-bottom: 2rem; }
+  .principle-grid { grid-template-columns: 1fr; gap: 2.4rem; }
+  .principle-grid article { max-width: 34rem; }
+  .principle-grid h3 { font-size: 1.55rem; margin-bottom: 0.75rem; }
+  footer { gap: 1rem; flex-wrap: wrap; }
+  footer span { display: block; margin-top: 0.5rem; }
+  #matrix-canvas { opacity: 0.32; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

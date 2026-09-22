@@ -9,338 +9,54 @@
   <link rel="icon" type="image/png" href="https://github.com/euxaristia.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ink: #020504;
-      --white: #eefbf3;
-      --muted: #8ca497;
-      --green: #31ff88;
-      --line: rgba(118, 255, 177, 0.16);
-      --plasma: linear-gradient(100deg, #ff5ca8 0%, #bd67ff 28%, #40b8ff 55%, #31ff88 82%, #d8ff55 100%);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      min-height: 100dvh;
-      overflow-x: hidden;
-      color: var(--white);
-      background: var(--ink);
-      font-family: "IBM Plex Mono", monospace;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 50% 12%, transparent 0, rgba(0, 0, 0, 0.06) 35%, rgba(0, 0, 0, 0.84) 100%),
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 4px);
-    }
-
-    #matrix-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;
-      opacity: 0.35;
-      pointer-events: none;
-    }
-
-    .site-shell {
-      position: relative;
-      z-index: 2;
-      width: min(1180px, calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    .hero {
-      min-height: 68vh;
-      display: grid;
-      align-content: center;
-      padding: 9vh 0 8vh;
-      border-bottom: 1px solid var(--line);
-    }
-
-    /* Grid items default to min-width: auto, so an unbreakable child (the path)
-       widens the track and drags every sibling past the viewport. */
-    .hero > *,
-    .hero-meta > *,
-    .principle > * { min-width: 0; }
-
-    .eyebrow {
-      margin: 0 0 26px;
-      color: var(--green);
-      font-size: clamp(0.7rem, 1.2vw, 0.82rem);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .hero h1 {
-      max-width: 1100px;
-      margin: 0;
-      font-family: "Syne", sans-serif;
-      font-size: clamp(3.4rem, 8.6vw, 7.8rem);
-      font-weight: 500;
-      letter-spacing: -0.075em;
-      line-height: 0.84;
-    }
-
-    .path {
-      display: block;
-      width: fit-content;
-      max-width: 100%;
-      padding-right: 0.08em;
-      background: var(--plasma);
-      background-size: 220% 220%;
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      filter: saturate(1.2) brightness(1.15);
-      animation: plasma-flow 9s ease-in-out infinite;
-    }
-
-    .hero-line {
-      display: block;
-      margin: 0.17em 0 0 0.42em;
-      color: var(--white);
-      font-size: 0.42em;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
-    }
-
-    .hero-meta {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-      gap: 40px;
-      margin: clamp(52px, 8vh, 90px) 0 0 12%;
-    }
-
-    .intro {
-      max-width: 630px;
-      margin: 0;
-      color: #c3d3ca;
-      font-size: clamp(0.95rem, 1.5vw, 1.16rem);
-      line-height: 1.8;
-    }
-
-    .scroll-note {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      writing-mode: vertical-rl;
-    }
-
-    .scroll-note::after {
-      content: "";
-      width: 1px;
-      height: 52px;
-      background: var(--green);
-    }
-
-    .principles {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      padding: clamp(70px, 10vw, 130px) 0;
-    }
-
-    .section-label {
-      grid-column: 1 / 4;
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .card-stack { grid-column: 4 / -1; }
-
-    .principle {
-      position: relative;
-      display: grid;
-      grid-template-columns: 62px 1fr minmax(220px, 0.85fr);
-      gap: 24px;
-      align-items: start;
-      padding: 32px 24px;
-      overflow: hidden;
-      border-top: 1px solid var(--line);
-      background: linear-gradient(90deg, transparent, rgba(7, 24, 15, 0.22));
-      transition: background 260ms ease, padding-left 260ms ease;
-    }
-
-    .principle:last-child { border-bottom: 1px solid var(--line); }
-
-    .principle::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      background: linear-gradient(90deg, rgba(189, 103, 255, 0.08), rgba(49, 255, 136, 0.04));
-      transition: opacity 260ms ease;
-    }
-
-    .principle:hover { padding-left: 34px; }
-    .principle:hover::before { opacity: 1; }
-
-    .glyph {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      place-items: center;
-      width: 44px;
-      height: 44px;
-      border: 1px solid rgba(49, 255, 136, 0.32);
-      color: var(--green);
-      font-size: 1.2rem;
-      box-shadow: inset 0 0 18px rgba(49, 255, 136, 0.07);
-    }
-
-    .principle h2 {
-      position: relative;
-      z-index: 1;
-      margin: 6px 0 0;
-      font-family: "Syne", sans-serif;
-      font-size: clamp(1.35rem, 2.4vw, 2.15rem);
-      font-weight: 500;
-      letter-spacing: -0.035em;
-    }
-
-    .principle p {
-      position: relative;
-      z-index: 1;
-      margin: 4px 0 0;
-      color: #a9bbb1;
-      font-size: 0.88rem;
-      line-height: 1.75;
-    }
-
-    footer {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 30px;
-      align-items: end;
-      padding: 38px 0 max(38px, env(safe-area-inset-bottom));
-      border-top: 1px solid var(--line);
-    }
-
-    .footer-name {
-      margin: 0 0 8px;
-      font-family: "Syne", sans-serif;
-      font-size: 1.5rem;
-    }
-
-    .footer-role { margin: 0; color: var(--muted); font-size: 0.75rem; }
-
-    .github-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0 8px;
-      border-bottom: 1px solid var(--green);
-      color: var(--green);
-      text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 180ms ease, text-shadow 180ms ease;
-    }
-
-    .github-link svg { width: 18px; height: 18px; fill: currentColor; }
-    .github-link:hover { color: white; text-shadow: 0 0 18px var(--green); }
-    a:focus-visible { outline: 2px solid var(--green); outline-offset: 5px; }
-
-    @keyframes plasma-flow {
-      0%, 100% { background-position: 0% 50%; filter: hue-rotate(0deg) saturate(1.2) brightness(1.15); }
-      50% { background-position: 100% 50%; filter: hue-rotate(35deg) saturate(1.35) brightness(1.2); }
-    }
-
-    @media (max-width: 780px) {
-      .site-shell { width: min(100% - 28px, 1180px); }
-      .hero { min-height: auto; padding: 14vh 0 10vh; }
-      .hero h1 { font-size: clamp(2.05rem, 11.5vw, 6rem); line-height: 0.95; }
-      .hero-line { margin-left: 0; margin-top: 0.34em; font-size: 0.34em; line-height: 1.15; }
-      .hero-meta { grid-template-columns: 1fr; margin-left: 0; }
-      .scroll-note { display: none; }
-      .principles { display: block; }
-      .section-label { margin-bottom: 28px; }
-      .principle { grid-template-columns: 50px 1fr; padding: 26px 0; }
-      .principle:hover { padding-left: 8px; }
-      .principle p { grid-column: 2; }
-      footer { grid-template-columns: 1fr; }
-      #matrix-canvas { opacity: 0.18; }
-      .intro { font-size: 0.95rem; line-height: 1.7; }
-      .hero { padding: 9vh 0 8vh; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition: none !important;
-      }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20260922">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <canvas id="matrix-canvas" aria-hidden="true"></canvas>
   <div class="site-shell">
-    <main>
+    <header class="masthead">
+      <a class="home-link" href="#main" aria-label="euxaristia home">/home/euxaristia</a>
+      <nav aria-label="Main navigation">
+        <a href="#principles">Principles</a>
+        <a href="https://github.com/euxaristia">GitHub</a>
+      </nav>
+    </header>
+    <main id="main">
       <section class="hero" aria-labelledby="hero-title">
-        <p class="eyebrow">Tech enthusiast · software engineer</p>
-        <h1 id="hero-title">
-          <span class="path">/home/euxaristia</span>
-          <span class="hero-line">building software at the speed of thought.</span>
-        </h1>
-        <div class="hero-meta">
-          <p class="intro">I make fast, thoughtful software for humans. Performance sets the floor. Feedback shapes the product. Good intent keeps the work moving.</p>
-          <span class="scroll-note">Principles</span>
+        <div class="hero-heading">
+          <p class="role">Tech enthusiast / software engineer</p>
+          <h1 id="hero-title">euxaristia<span aria-hidden="true">_</span></h1>
+        </div>
+        <div class="hero-bottom">
+          <p class="statement">Building software<br>at the speed<br>of thought.</p>
+          <div class="introduction">
+            <p>I make fast, thoughtful software for humans. Performance sets the floor. Feedback shapes the product. Good intent keeps the work moving.</p>
+            <a class="profile-link" href="https://github.com/euxaristia">Explore my work on GitHub <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </section>
-
-      <section class="principles" aria-labelledby="principles-title">
-        <p class="section-label" id="principles-title">Operating principles</p>
-        <div class="card-stack">
-          <article class="principle">
-            <span class="glyph" aria-hidden="true">ϟ</span>
-            <h2>Speed is a feature.</h2>
+      <section class="principles" id="principles" aria-labelledby="principles-title">
+        <h2 id="principles-title">How I build</h2>
+        <div class="principle-grid">
+          <article>
+            <h3>Speed is a feature.</h3>
             <p>Great software should never make the hardware feel slow. Performance comes first, from the first interaction to the last render.</p>
           </article>
-          <article class="principle">
-            <span class="glyph" aria-hidden="true">◎</span>
-            <h2>Listen, then build.</h2>
+          <article>
+            <h3>Listen, then build.</h3>
             <p>User feedback is not an afterthought. It decides what belongs in a product, what needs refinement, and what should stay out.</p>
           </article>
-          <article class="principle">
-            <span class="glyph" aria-hidden="true">⌘</span>
-            <h2>Work in good faith.</h2>
+          <article>
+            <h3>Work in good faith.</h3>
             <p>Politics and opinions stay out of the critical path. Clear thinking, generous collaboration, and good intentions move projects forward.</p>
           </article>
         </div>
       </section>
     </main>
-
     <footer>
-      <div>
-        <p class="footer-name">euxaristia</p>
-        <p class="footer-role">Tech enthusiast / software engineer</p>
-      </div>
-      <a class="github-link" href="https://github.com/euxaristia" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-        View GitHub profile
-      </a>
+      <p>euxaristia <span>/ software engineer</span></p>
     </footer>
   </div>
   <script src="matrix.js"></script>
